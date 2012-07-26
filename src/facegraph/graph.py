@@ -166,8 +166,8 @@ class Graph(object):
         return self[attr]
 
     def _range(self, start, stop):
-        params = {'offset': start,
-                  'limit': stop - start}
+        params = {'offset': int(start),
+                  'limit': int(stop - start)}
         return self.copy(url=add_query_params(self.url, params))
 
     def with_url_params(self, param, val):
