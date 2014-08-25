@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import re
+import socket
 import urllib
 import urllib2 as default_urllib2
 import httplib as default_httplib
@@ -398,3 +399,19 @@ class GraphException(Exception):
         if self.code:
             s +=  ", (%s)" % self.code
         return s
+
+
+class BanException(Exception):
+    def __init__(self, uri, data):
+        self.uri = uri
+        self.ip = socket.gethostbyname(socket.gethostname())
+
+        if not isinstance(data, str):
+            data = data.encode('utf-8')
+        self.data = data
+
+    def __repr__(self):
+        return str(self)
+
+    def __str__(self):
+        return '{} {} {}'.format(self.ip, self.uri, self.data)

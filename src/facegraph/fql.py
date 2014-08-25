@@ -4,7 +4,7 @@ import urllib2
 
 import bunch
 import ujson as json
-from graph import GraphException
+from graph import GraphException, BanException
 from url_operations import add_path, update_query_params
 
 class FQL(object):
@@ -124,7 +124,13 @@ class FQL(object):
 
     @staticmethod
     def fetch(url, data=None):
-        conn = urllib2.urlopen(url, data=data)
+        try:
+            conn = urllib2.urlopen(url, data=data)
+        except urllib2.URLError as e:
+            if e.reason[0] == 101:
+                raise BanException(url, data)
+            else:
+                raise
         try:
             return conn.read()
         finally:
