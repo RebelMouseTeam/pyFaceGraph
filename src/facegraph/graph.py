@@ -407,7 +407,7 @@ class BanException(Exception):
         self.ip = socket.gethostbyname(socket.gethostname())
 
         if not isinstance(data, str):
-            data = data.encode('utf-8')
+            data = data.encode('utf-8') if data else ''
         self.data = data
 
     def __repr__(self):
